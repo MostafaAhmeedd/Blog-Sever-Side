@@ -15,7 +15,11 @@ router.post('/signup', async (req, res) => {
         email: req.body.email, 
         password:encryptedPassword,
       });
-      if(newUser){res.redirect("viewposts")}
+      if(newUser){
+        const token = jwt.sign(newUser.id,"secret");
+        res.cookie("token", token);
+        res.redirect("viewposts")
+      }
     } catch (err) {
       console.error(err);
       res.status(400).json({ error: 'An error occurred while creating a new user.' });
