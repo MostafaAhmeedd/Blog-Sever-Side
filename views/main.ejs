@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Blog</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <!-- Header/Blog Title -->
+        <div class="header bg-white p-4 text-center">
+            <h1 class="display-4">My Blog</h1>
+        </div>
+
+        <!-- Button to Add New Post -->
+        <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#addPostModal">Add Post</button>
+
+        <!-- Space for Posts -->
+        <div class="my-4"></div>
+
+        <!-- Article 1 -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title">TITLE HEADING</h2>
+                <h6 class="card-subtitle mb-2 text-muted">Title description</h6>
+                <img src="https://example.com/sample-image.jpg" alt="Sample Image" class="img-fluid" style="max-width: 300px;">
+                <p>Sample content of the blog post goes here...</p>
+            </div>
+        </div>
+
+        <!-- Modal for Adding New Post -->
+        <div class="modal fade" id="addPostModal" tabindex="-1" role="dialog" aria-labelledby="addPostModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addPostModalLabel">Add New Post</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="postForm">
+                            <div class="form-group">
+                                <label for="postTitle">Title</label>
+                                <input type="text" class="form-control" id="postTitle" name="postTitle" placeholder="Enter title">
+                            </div>
+                            <div class="form-group">
+                                <label for="postDescription">Description</label>
+                                <textarea class="form-control" id="postDescription" name="postDescription" placeholder="Enter description"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="postImage">Image</label>
+                                <input type="file" class="form-control-file" id="postImage" name="postImage" accept="image/*">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Add Post</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS (if needed) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
