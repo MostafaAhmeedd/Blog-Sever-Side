@@ -7,7 +7,6 @@ const {checktoken} = require('../services/checktoken')
 router.get('/main_page',checktoken, async (req, res) => {}
 )
 router.post('/addpost',checktoken,upload.single("image"), async (req, res) => {
-  console.log(req.user)
   try{
     const post = await Post.create({
         title :req.body.title,
@@ -15,16 +14,17 @@ router.post('/addpost',checktoken,upload.single("image"), async (req, res) => {
         image:req.file.path,
         userId : req.user
       });
+      console.log("dasdasdas")
     // res.status(401).json({post})
-    if(post){res.status(201).json("correct")}
+    if(post){res.redirect("viewposts")}
 }
 catch(err){
-    res.status(401).json("False")
+  console.log(err)
 }
 })
-router.get('/veiwposts',checktoken, async (req, res) => {
+router.get('/viewposts',checktoken, async (req, res) => {
   try{
-  const post = await Post.findAll({
+  const posts = await Post.findAll({
     attributes: ['title', 'content', 'image'],
     include: [
       {
@@ -34,7 +34,11 @@ router.get('/veiwposts',checktoken, async (req, res) => {
       },
     ],
   });
-  if(post){ res.status(201).json({post})}
+  if(posts){
+    //  console.log(posts)
+    //  res.status(201).json({posts})
+      res.render("main.ejs",{posts:posts})
+    }
   else
   {
     res.status(201).json("No posts available")

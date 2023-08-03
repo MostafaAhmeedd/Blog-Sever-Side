@@ -2,9 +2,8 @@ const express = require('express')
 const router = express.Router()
 const {User} = require('../models');
 const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
 const bcrypt = require('bcrypt');
-router.get('/SignUp', (req, res) => {
+router.get('/signup', (req, res) => {
     res.render('signup')
   })
 router.post('/signup', async (req, res) => {
@@ -16,34 +15,42 @@ router.post('/signup', async (req, res) => {
         email: req.body.email, 
         password:encryptedPassword,
       });
-      if(newUser){res.status(201).json(newUser);}
+      if(newUser){res.redirect("viewposts")}
     } catch (err) {
       console.error(err);
       res.status(400).json({ error: 'An error occurred while creating a new user.' });
     }
   });
   router.get('/login', (req, res) => {
-    // res.render('login')
-    res.status(201).json("login page");
+    res.render('login')
+    // res.status(201).json("login page");
   })
   router.post('/login', async (req, res) => {
     try {
       const user = await User.findOne({ where: { email: req.body.email }});
+
       if (user)
       { 
         const correct= await bcrypt.compare(req.body.password, user.password);
+
         if(correct)
         {
           const token = jwt.sign(user.id,"secret");
           res.cookie("token", token);
           // console.log(token)
           // res.status(201).json(user);
-          res.status(201).json({ message:"logged in successfully "});
+          // res.status(201).json({ message:"logged in successfully "});
+          // window.location.href = "/user/viewposts";
+          res.redirect("viewposts")
+        }
+        else
+        {
+          res.status(201).json({ message:"Incorrect pass or email "});
         }
       }
     } catch (err) {
       console.error(err);
-      res.status(400).json({ error: 'An error occurred while creating a new user.' });
+      res.status(400).json({ error: 'An error occurred while login.' });
     }
   })
   router.get('/main', (req, res) => {
@@ -51,7 +58,7 @@ router.post('/signup', async (req, res) => {
   })
   router.get('/logout', (req, res) => {
     res.clearCookie("token")
-    res.status(201).json({ message:"logged out successfully "});
+     
     res.redirect('login');
   });
 module.exports = router

@@ -1,9 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <title>My Blog</title>
     <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        function redirectToRoute(route) {
+    window.location.href = route;
+}
+      </script>
+    <div class="container mt-4">
+        <!-- Logout Button -->
+        <button type="button" class="btn btn-danger mt-3" onclick="redirectToRoute('/user/logout')">Logout</button></div>
 </head>
 <body>
     <div class="container mt-4">
@@ -19,15 +28,17 @@
         <div class="my-4"></div>
 
         <!-- Article 1 -->
+        <% posts.forEach(item=> { %>
         <div class="card mb-4">
             <div class="card-body">
-                <h2 class="card-title">TITLE HEADING</h2>
-                <h6 class="card-subtitle mb-2 text-muted">Title description</h6>
-                <img src="https://example.com/sample-image.jpg" alt="Sample Image" class="img-fluid" style="max-width: 300px;">
-                <p>Sample content of the blog post goes here...</p>
+                <h2 class="card-title"><%= item.user.firstName %><%= item.user.lastName %> </h2>
+                <h6 class="card-subtitle mb-2 text-muted"><%= item.title %></h6>
+                <img src="../<%= item.image %>" width="100" height="100">
+                <!-- <img src alt="Sample Image" class="img-fluid" > -->
+                <p><%= item.content %></p>
             </div>
         </div>
-
+        <% }); %>
         <!-- Modal for Adding New Post -->
         <div class="modal fade" id="addPostModal" tabindex="-1" role="dialog" aria-labelledby="addPostModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -39,25 +50,33 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="postForm">
-                            <div class="form-group">
-                                <label for="postTitle">Title</label>
-                                <input type="text" class="form-control" id="postTitle" name="postTitle" placeholder="Enter title">
-                            </div>
-                            <div class="form-group">
-                                <label for="postDescription">Description</label>
-                                <textarea class="form-control" id="postDescription" name="postDescription" placeholder="Enter description"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="postImage">Image</label>
-                                <input type="file" class="form-control-file" id="postImage" name="postImage" accept="image/*">
-                            </div>
-                        </form>
-                    </div>
+                            <form method="POST" action="/user/addpost" id="postForm" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <div>
+                                    <label for="postTitle">Title</label>
+                                    <input type="text" class="form-control" id="postTitle" name="title" placeholder="Enter title">
+                                </div>
+                                <div>
+                                    <label for="postDescription">Description</label>
+                                    <input type="text" placeholder="Enter Description" name="content" required>
+                                </div>
+                                <div>
+                                    <label for="postImage">Image</label>
+                                    <input type="file" class="form-control-file" id="postImage" name="image">
+                                </div>
+
+                                <div class="clearfix">
+                                    <button type="submit" class="signup">Add Post</button>
+
+                                </div>
+                               </div>
+                                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                            </form>
+                    <!-- </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Add Post</button>
-                    </div>
+
+
+                    </div> -->
                 </div>
             </div>
         </div>
