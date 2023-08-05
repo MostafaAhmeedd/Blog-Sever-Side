@@ -3,7 +3,6 @@ const app = express()
 const port = 4000
 const user = require("./routes/User_main")
 const addpost = require("./routes/manage_posts")
-const path = require('path')
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 app.set('view engine', 'ejs');

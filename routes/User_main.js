@@ -2,11 +2,11 @@ const express = require('express')
 const router = express.Router()
 const {User} = require('../models');
 const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
 const bcrypt = require('bcrypt');
 const  {signupValidation,loginValidation}  =require('../services/User_Validation');
-const { check, validationResult }
-    = require('express-validator');
+const { check, validationResult } = require('express-validator');
+
+
 router.post('/signup',signupValidation,async (req, res) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {

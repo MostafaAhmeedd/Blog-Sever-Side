@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const path = require('path')
 const {User,Post} = require('../models');
 const upload = require('../services/multer.js');
 const {checktoken,checkUser} = require('../services/checktoken')
@@ -58,7 +57,7 @@ router.get('/viewposts',checktoken, async (req, res) => {
         attributes: ['firstName', 'lastName'],
         as: 'user',
       },
-    ],
+    ], 
   });
   if(posts){ res.status(201).json({content : posts.rows,
            totalpages: Math.ceil(posts.count/size)})}
