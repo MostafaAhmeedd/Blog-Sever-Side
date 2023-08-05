@@ -7,30 +7,41 @@ const bcrypt = require('bcrypt');
 const  {signupValidation,loginValidation}  =require('../services/User_Validation');
 const { check, validationResult }
     = require('express-validator');
-  router.post('/signup',signupValidation,async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.json(errors)
-  }
-  else{
-    encryptedPassword = await bcrypt.hash(req.body.password, 10);
-      try {
-        const newUser = await User.create({
-          firstName: req.body.firstName,
-          lastName:req.body.lastName,
-          email: req.body.email, 
-          password:encryptedPassword,
-        });
-        if(newUser){
-          const token = jwt.sign(newUser.id,"secret");
-          res.cookie("token", token);
-          res.status(201).json(newUser);
-        }
-      } catch (err) {
-        console.error(err);
-        res.status(400).json({ error: 'An error occurred while creating a new user.' });
-      }}
-    });  
+router.post('/signup',signupValidation,async (req, res) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        res.json(errors)
+    }
+    else{
+      encryptedPassword = await bcrypt.hash(req.body.password, 10);
+        try {
+          if(req.body.email != null){
+          const duplicate = await User.findOne({where:{email:req.body.email }
+          })
+        if (duplicate == null)
+        {
+          const newUser = await User.create({
+            firstName: req.body.firstName,
+            lastName:req.body.lastName,
+            email: req.body.email, 
+            password:encryptedPassword,
+          });
+          if(newUser){
+            const token = jwt.sign(newUser.id,"secret");
+            res.cookie("token", token);
+            res.status(200),json({message:"User Created"})
+          }
+        } 
+      else
+      {
+        res.status(200).json({message:"Email already exists"});
+      } 
+    }
+        } catch (err) {
+          console.error(err);
+          res.status(400).json({ error: 'An error occurred while creating a new user.' });
+        }}
+      });  
   router.get('/login', (req, res) => {
     // res.render('login')
     res.status(201).json("login page");
