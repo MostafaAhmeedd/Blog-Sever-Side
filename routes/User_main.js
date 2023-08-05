@@ -29,8 +29,7 @@ router.post('/signup',signupValidation,async (req, res) => {
           password:encryptedPassword,
         });
         if(newUser){
-          const token = jwt.sign(newUser.id,"secret");
-          res.cookie("token", token);
+          req.session.userId = newUser.id;
           res.redirect("viewposts")
         }
       } 
@@ -40,7 +39,6 @@ router.post('/signup',signupValidation,async (req, res) => {
     } 
   }
       } catch (err) {
-        console.error(err);
         res.status(400).json({ error: 'An error occurred while creating a new user.' });
       }}
     });  
@@ -63,9 +61,9 @@ router.post('/signup',signupValidation,async (req, res) => {
 
         if(correct)
         {
-          console.log(user)
-          const token = jwt.sign(user.id,"secret");
-          res.cookie("token", token);
+          req.session.userId = user.id;
+          // const token = jwt.sign(user.id,"secret");
+          // res.cookie("token", token);
           // console.log(token)
           // res.status(201).json(user);
           // res.status(201).json({ message:"logged in successfully "});
@@ -77,6 +75,8 @@ router.post('/signup',signupValidation,async (req, res) => {
           res.status(201).json({ message:"Incorrect pass or email "});
         }
       }
+      else
+      { res.status(201).json({ message:"Incorrect pass or email "});}
     } catch (err) {
       console.error(err);
       res.status(400).json({ error: 'An error occurred while login.' });
@@ -86,8 +86,14 @@ router.post('/signup',signupValidation,async (req, res) => {
     res.render('main')
   })
   router.get('/logout', (req, res) => {
-    res.clearCookie("token")
-     
-    res.redirect('login');
+    req.session.destroy((err) => {
+      if (err) {
+        console.error('Error destroying session:', err);
+      }
+      console.log(req.session)
+      // Clear the session cookie
+      // Redirect the user to the login page or any other desired page
+      res.redirect('login');
+    });
   });
 module.exports = router

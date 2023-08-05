@@ -3,16 +3,16 @@ const router = express.Router()
 const path = require('path')
 const {User,Post} = require('../models');
 const upload = require('../services/multer.js');
-const {checktoken,checkUser} = require('../services/checktoken')
-router.get('/main',checktoken, async (req, res) => {}
+const {checkUser, checkAuth} = require('../services/checktoken')
+router.get('/main',checkAuth, async (req, res) => {}
 )
-router.post('/addpost',checktoken,upload.single("image"), async (req, res) => {
+router.post('/addpost',checkAuth,upload.single("image"), async (req, res) => {
   try{
     const post = await Post.create({
         title :req.body.title,
         content: req.body.content,
         image:req.file.path,
-        userId : req.user
+        userId : req.session.userId
       });
     // res.status(401).json({post})
     if(post){res.redirect("viewposts")}
@@ -21,7 +21,7 @@ catch(err){
   console.log(err)
 }
 })
-router.get('/view-single-post/:id',checktoken,checkUser, async (req, res) => {
+router.get('/view-single-post/:id',checkAuth,checkUser, async (req, res) => {
   try{
 }
 catch{
@@ -29,7 +29,7 @@ catch{
 }
 
 })
-router.get('/viewposts',checktoken, async (req, res) => {
+router.get('/viewposts',checkAuth, async (req, res) => {
 
   try{
   // const {page,size} =req.query; 
@@ -43,7 +43,7 @@ router.get('/viewposts',checktoken, async (req, res) => {
       page=pageASNumber;
     }
 
-    let size = 9;
+    let size = 3;
     if (!Number.isNaN(sizeAsNumber) && sizeAsNumber> 0 && sizeAsNumber<= size )
     {
       size = sizeAsNumber;
@@ -60,10 +60,11 @@ router.get('/viewposts',checktoken, async (req, res) => {
         as: 'user',
       },
     ],
+    order: [['updatedAt', 'DESC']],
   });
   // if(posts){res.status(201).json({posts:posts.rows,totalpages:Math.ceil(posts.count/size)})}
   if(posts){ res.render("main",{posts : posts.rows,
-           totalpages: Math.ceil(posts.count/size)},)}
+           totalpages: Math.ceil(posts.count/size),page:page,size:size},)}
   else
   {
     res.status(201).json("No posts available")

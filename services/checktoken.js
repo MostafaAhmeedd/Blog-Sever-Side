@@ -1,27 +1,35 @@
 const jwt = require('jsonwebtoken');
 const {User,Post} = require('../models');
-const checktoken = async(req,res,next) => {
-    try{
-        const token = req.cookies.token;
-        const verified = jwt.verify(token, "secret");
-        // const curr_user = User.findByPk(verified)
-        if(verified){
-            req.user= verified
-            return next() }
-        else
-            {
-                res.status(401).json({message:'unauthorized'})
-            }
+const checkAuth = (req, res, next) => {
+    if (req.session && req.session.userId) {
+      return next();
+    } else {
+      res.status(401).json({ message: 'Unauthorized' });
     }
-    catch(err)
-    {
-        res.status(401).json({message:'unauthorized'})
-    }
-}
+  };
+// const checktoken = async(req,res,next) => {
+//     try{
+//         const token = req.cookies.token;
+//         const verified = jwt.verify(token, "secret");
+//         // const curr_user = User.findByPk(verified)
+//         if(verified){
+//             req.user= verified
+//             return next() }
+//         else
+//             {
+//                 res.status(401).json({message:'unauthorized'})
+//             }
+//     }
+//     catch(err)
+//     {
+//         res.status(401).json({message:'unauthorized'})
+//     }
+// }
 const checkUser = async(req,res,next)=>{
     try{
-        const token = req.cookies.token;
-        const verified = jwt.verify(token, "secret");
+        // const token = req.cookies.token;
+        // const verified = jwt.verify(token, "secret");
+        const verified = req.session.userId;
         if(verified){
             const curr_user =await User.findByPk(verified)
             const post = await Post.findByPk(req.params.id,{attributes: ["title","content","image"],include: [
@@ -56,4 +64,4 @@ const checkUser = async(req,res,next)=>{
     }
 }
 
-module.exports = {checktoken,checkUser};
+module.exports = {checkUser,checkAuth};

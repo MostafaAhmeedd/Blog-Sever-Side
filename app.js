@@ -4,13 +4,18 @@ const port = 3000
 const user = require("./routes/User_main")
 const addpost = require("./routes/manageposts")
 const path = require('path')
-app.set('view engine', 'ejs');
-const multer = require("multer");
-app.use(express.static('public'));
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
+app.use(session({
+  secret: 'Secret',
+  resave: false,
+  saveUninitialized: false,}));
+
 app.use(cookieParser());
 app.use('/images',express.static(path.join(__dirname,"images")));
-const bodyParser = require('body-parser');
+app.use(express.static('public'));
+app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));

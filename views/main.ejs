@@ -36,6 +36,16 @@
             </div>
         </div>
         <% }); %>
+        
+        <ul class="pagination justify-content-center mt-4">
+            <% if (totalpages >= 0) { %>
+                <% for (let i = 0; i < totalpages; i++) { %>
+                    <li class="page-item <%= page === i ? 'active' : '' %>">
+                        <a class="page-link" href="/user/viewposts?page=<%= i %>&size=<%= size %>"><%= i+1 %></a>
+                    </li>
+                <% } %>
+            <% } %>
+        </ul>
 
         <!-- Modal for Adding New Post -->
         <div class="modal fade" id="addPostModal" tabindex="-1" role="dialog" aria-labelledby="addPostModalLabel" aria-hidden="true">
