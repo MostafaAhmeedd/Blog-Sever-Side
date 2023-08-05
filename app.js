@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const port = 3000
 const user = require("./routes/User_main")
-const addpost = require("./routes/addPost")
+const addpost = require("./routes/manageposts")
 const path = require('path')
 app.set('view engine', 'ejs');
 const multer = require("multer");

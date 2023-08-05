@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        function redirectToRoute(route) {
+    window.location.href = route;
+}
+      </script>
+</head>
+<body>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="card-title"><%= post.user.firstName %><%= post.user.lastName %> </h2>
+            <h6 class="card-subtitle mb-2 text-muted"><%= post.title %></h6>
+            <img src="\<%= post.image %>" width="100" height="100">
+            <!-- <img src alt="Sample Image" class="img-fluid" > -->
+            <p><%= post.content %></p>
+        </div>
+    </div>
+</body>
+
+
+
+</html>

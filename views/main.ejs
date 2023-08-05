@@ -32,13 +32,11 @@
         <div class="card mb-4">
             <div class="card-body">
                 <h2 class="card-title"><%= item.user.firstName %><%= item.user.lastName %> </h2>
-                <h6 class="card-subtitle mb-2 text-muted"><%= item.title %></h6>
-                <img src="../<%= item.image %>" width="100" height="100">
-                <!-- <img src alt="Sample Image" class="img-fluid" > -->
-                <p><%= item.content %></p>
+                <button type="submit" class="signup" onclick="redirectToRoute('/user/view-single-post/<%= item.id %>')">View Details</button>
             </div>
         </div>
         <% }); %>
+
         <!-- Modal for Adding New Post -->
         <div class="modal fade" id="addPostModal" tabindex="-1" role="dialog" aria-labelledby="addPostModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -84,6 +82,9 @@
 
     <!-- Include Bootstrap JS (if needed) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
